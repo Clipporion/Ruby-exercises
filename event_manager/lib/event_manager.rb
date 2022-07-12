@@ -33,6 +33,16 @@ def thank_you_letter(id,form_letter)
     end
 end
 
+def clean_phone_number(number)
+    clean_number = ""
+    if number.gsub(/\^D/,"").length == 10
+        clean_number = number
+    elsif number.length == 11 && number[0] == 1
+        clean_number = number[1..-1]
+    else number = "No number available"
+end
+
+
 puts "Event Manager initialized"
 
 contents = CSV.open(
