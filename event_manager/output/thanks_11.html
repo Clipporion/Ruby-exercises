@@ -7,7 +7,7 @@
     <title>Thank you</title>
 </head>
 <body>
-    <h1>Thanks <%= name %></h1>
+    <h1>Thanks Colin</h1>
     <p>Thanks for coming to our conference. We couldn't have done it without you.</p>
     
     <p>
@@ -16,18 +16,25 @@
     </p>
 
     <table>
-    <% if legislators.kind_of?(Array)%>
+    
       <th>Name</th><th>Website</th>
-      <% legislators.each do |legislator|%>
+      
         <tr>
-          <td><%= "#{legislator.name}"%></td>
-          <td><%= "#{legislator.urls.join}" unless legislator.urls.nil?%>
+          <td>Edward J. Markey</td>
+          <td>https://www.markey.senate.gov/https://en.wikipedia.org/wiki/Ed_Markey
         </tr>
-        <%end%>
-        <%else%>
-        <th></th>
-        <td> <%="#{legislators}"%>
-        <%end%>
+        
+        <tr>
+          <td>Elizabeth Warren</td>
+          <td>https://www.warren.senate.gov/https://en.wikipedia.org/wiki/Elizabeth_Warren
+        </tr>
+        
+        <tr>
+          <td>Jake Auchincloss</td>
+          <td>https://auchincloss.house.gov/https://en.wikipedia.org/wiki/Jake_Auchincloss
+        </tr>
+        
+        
     </table>
 </body>
 </html>
