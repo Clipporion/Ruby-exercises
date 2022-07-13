@@ -1,7 +1,8 @@
 require "csv"
 require 'google/apis/civicinfo_v2'
 require "erb"
-
+require "date"
+require "time"
 
 def clean_zipcode(zipcode)
     zipcode.to_s.rjust(5,"0")[0..4]
@@ -34,14 +35,33 @@ def thank_you_letter(id,form_letter)
 end
 
 def clean_phone_number(number)
-    clean_number = ""
-    if number.gsub(/\^D/,"").length == 10
-        clean_number = number
-    elsif number.length == 11 && number[0] == 1
-        clean_number = number[1..-1]
-    else number = "No number available"
+    clean_number = number.delete!("^0-9")
+    if clean_number.length == 10
+        clean_number
+    elsif clean_number.length == 11 && clean_number[0] == 1
+        clean_number = clean_number[1..-1]
+    else 
+        "No number available"
 end
 
+def booking_times(file)
+    hours = Hash.new(0)
+    days = Hash.new(0)
+    file.each_with_index do |line,index|
+        next if index == 0
+        newline = line.split
+        hour = Time.strptime(newline[1], "%m/%d/%y/%k:%M").hour
+        datum = Time.parse(Time.strptime(newline[1], "%m/%d/%y/%k:%M").strftime("%y-%m-%d"))
+        hours[hour] += 1
+        days[datum.strftime("%A")] += 1
+    end
+
+    highest_d = days.sort_by {|key, value| value}.reverse.first
+    highest_h = hours.sort_by {|key,value| value}.reverse.first
+
+    puts "Most bookings on #{highest_d[0]}s 
+    and between #{highest_h[0]} and #{highest_h[0]+1} o'clock"
+end
 
 puts "Event Manager initialized"
 
@@ -56,7 +76,7 @@ erb_template = ERB.new(template_letter)
 contents.each do |row|
     id = row[0]
     name = row[:first_name]
-
+    number = row[:HomePhone]
     zipcode = clean_zipcode(row[:zipcode])
 
     legislators = legislators_by_zipcode(zipcode)
