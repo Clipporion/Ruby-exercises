@@ -49,7 +49,7 @@ def booking_times(file)
     days = Hash.new(0)
     file.each_with_index do |line,index|
         next if index == 0
-        newline = line.split
+        newline = line.split(",")
         hour = Time.strptime(newline[1], "%m/%d/%y/%k:%M").hour
         datum = Time.parse(Time.strptime(newline[1], "%m/%d/%y/%k:%M").strftime("%y-%m-%d"))
         hours[hour] += 1
